@@ -4,8 +4,8 @@ const app = express() // initialize your express app instance
 const cors = require('cors');
 
 app.use(cors()) // after you initialize your express app instance
-
-const getBook = require('./controller/book.controller')
+app.use(express.json());
+const {getBook,creatBook,deleteBook} = require('./controller/book.controller')
 require('dotenv').config();
 
 const mongoose = require('mongoose')
@@ -21,5 +21,8 @@ app.get('/', // our endpoint name
  
 app.get('/book', getBook)
 
+app.post('/books', creatBook)
+
+app.delete('/books/:book_idx',deleteBook)
 
 app.listen(3200) // kick start the express server to work
