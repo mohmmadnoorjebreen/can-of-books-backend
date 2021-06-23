@@ -27,5 +27,5 @@ app.post('/books', creatBook)
 
 app.delete('/books/:book_idx',deleteBook)
 app.put('/book/:book_idx',updateBook)
-
-app.listen(3200) // kick start the express server to work
+const PORT = process.env.PORT
+app.listen(PORT) // kick start the express server to work
