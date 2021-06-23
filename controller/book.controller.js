@@ -7,11 +7,11 @@ const modelOfUser = require('../model/user.model')
 const getBook = (req, res) => {
     const { email } = req.query;
 
-    modelOfUser.find({ email: email }, (error, bookModel) => {
+    modelOfUser.findOne({ email: email }, (error, bookModel) => {
         if (error) {
             res.send(error);
         } else {
-            res.json(bookModel[10].book);
+            res.json(bookModel.book);
         }
     })
 
@@ -23,39 +23,43 @@ const creatBook = (req, res) => {
 
     const { userEmail, nameBook, descriptionBook, statusBook } = req.body;
 
-    modelOfUser.find({ email: userEmail }, (error, newBookModel) => {
-        console.log(newBookModel);
+    modelOfUser.findOne({ email: userEmail }, (error, newBookModel) => {
+        
         if (error) {
             res.send(error);
         } else {
 
-            newBookModel[11].book.push({ name: nameBook, description: descriptionBook, status: statusBook })
-            res.json(newBookModel[11].book);
+            newBookModel.book.push({ name: nameBook, description: descriptionBook, status: statusBook })
+            newBookModel.save()
+            res.json(newBookModel.book);
         }
     })
 
-    newBookModel.save()
 }
 
 const deleteBook = (req, res) => {
 
-    const BookId = req.params.id;
+    const BookId = req.params.book_idx;
     const { email } = req.query;
 
-    modelOfUser.find({ email: email }, (error, DeleteBookModel) => {
+    modelOfUser.findOne({ email: email }, (error, DeleteBookModel) => {
+        console.log(BookId);
         if (error) {
             res.send(error);
         } else {
-            console.log(DeleteBookModel);
-            DeleteBookModel[10].book = DeleteBookModel[10].book.filter(value => {
-                if (value._id !== BookId) {
+            
+            let dataAfterDelete = DeleteBookModel.book.filter(value => {
+                console.log(value._id);
+                if (String(value._id) !== String(BookId)) {
                     return value;
                 }
             })
-            res.json(DeleteBookModel[10].book);
+            console.log(dataAfterDelete);
+            DeleteBookModel.save()
+            res.json(dataAfterDelete);
         }
     })
-    // DeleteBookModel.save()
+    
 
 }
 
