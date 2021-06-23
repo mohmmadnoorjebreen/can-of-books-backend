@@ -30,7 +30,7 @@ const creatBook = (req, res) => {
         } else {
 
             newBookModel.book.push({ name: nameBook, description: descriptionBook, status: statusBook })
-            newBookModel.save()
+            // newBookModel.save()
             res.json(newBookModel.book);
         }
     })
@@ -54,8 +54,7 @@ const deleteBook = (req, res) => {
                     return value;
                 }
             })
-            console.log(dataAfterDelete);
-            DeleteBookModel.save()
+            // DeleteBookModel.save()
             res.json(dataAfterDelete);
         }
     })
@@ -63,10 +62,29 @@ const deleteBook = (req, res) => {
 
 }
 
+const updateBook = (req, res)=>{
+    const BookId = req.params.book_idx;
+
+    const { userEmail, nameBook, descriptionBook, statusBook } = req.body;
+
+    modelOfUser.findOne({ email: userEmail }, (error, newBookModel) => {
+        
+        if (error) {
+            res.send(error);
+        } else {
+
+            newBookModel.book.splice(BookId,1,{ name: nameBook, description: descriptionBook, status: statusBook })
+            // newBookModel.save()
+            res.json(newBookModel.book);
+        }
+    })
+}
+
 module.exports = {
     getBook,
     creatBook,
-    deleteBook
+    deleteBook,
+    updateBook
 };
 
 

@@ -40,7 +40,7 @@ const seedUserData = () => {
 
 
     newModel.save()
-
+console.log(newModel);
 
 }
 // seedUserData();
